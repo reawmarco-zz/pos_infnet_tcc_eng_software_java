@@ -1,0 +1,49 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layouts/default">
+<head></head>
+
+<section layout:fragment="content">
+
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<div class="clearfix">
+				<h1 class="panel-title os-title-panel">Pesquisar Módulos</h1>
+				<a class="btn btn-link os-link-panel" href="/modules/create">Novo Módulo</a>
+			</div>
+		</div>
+		<div class="panel-body">
+			<div class="table-responsive">
+				<table class="table table-bordered table-striped">
+					<thead>
+						<tr>
+							<th class="text-center col-md-1">#</th>
+							<th class="text-center col-md-5">Descrição</th>
+							<th class="text-center col-md-3">Início</th>
+							<th class="text-center col-md-3">Fim</th>
+							<th class="text-center col-md-3">Editar</th>
+							<th class="text-center col-md-3">Remover</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="module : ${modules}">
+							<td class="text-center" th:text="${module.oid}"></td>
+							<td th:text="${module.description}"></td>
+							<td class="text-center" th:text="${module.startDate}"></td>
+							<td class="text-center" th:text="${module.endDate}"></td>
+							<td class="text-center"><a class="btn btn-link btn-xs" th:href="@{/modules/update/{id}(id=${module.oid})}" th:object="${module}"
+								method="post"> <span class="glyphicon glyphicon-pencil"></span>
+							</a></td>
+							<td class="text-center"><a class="btn btn-link btn-xs" th:href="@{/modules/delete/{id}(id=${module.oid})}" th:object="${module}"
+								method="post"> <span class="glyphicon glyphicon-remove"></span>
+							</a></td>
+						</tr>
+						<tr>
+							<td colspan="6" th:if="${#lists.isEmpty(modules)}">Nenhum módulo encontrado</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</section>
+</html>

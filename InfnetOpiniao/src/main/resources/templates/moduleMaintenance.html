@@ -1,0 +1,110 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layouts/default">
+<head>
+<title>Cadastro de Módulo</title>
+</head>
+<section layout:fragment="content">
+
+	<form class="form-horizontal" method="POST" action="/modules" th:object="${module}">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<div class="clearfix">
+					<h1 class="panel-title os-title-panel">Novo Módulo</h1>
+					<a class="btn btn-link os-link-panel" href="/modules">Voltar para pesquisa</a>
+				</div>
+			</div>
+			<div class="panel-body">
+				<br /> <input type="hidden" th:field="*{oid}" />
+
+				<div class="form-group">
+					<div class="col-md-4">
+						<label for="name" class="col-sm-2">Descrição</label> <br />
+						<textarea rows="6" th:field="*{description}" class="form-control" id="description"></textarea>
+					</div>
+
+
+					<div class="col-md-2">
+						<label class="col-sm-2">Inicio</label> <br /> <input type="text" class="form-control datePicker2" id="startDate" th:field="*{startDate}"
+							 />
+					</div>
+
+					<div class="col-md-2">
+						<label class="col-sm-2">Fim</label> <br /> <input type="text" class="form-control datePicker2" id="endDate" th:field="*{endDate}"
+							 />
+					</div>
+
+					<div class="col-md-2">
+						<label>Bloco</label> <br /> <select class="form-control" th:field="*{block}">
+							<option th:each="block:${allBlocks}" th:text="${block.name}" th:value="${block.oid}"></option>
+						</select>
+					</div>
+
+					<div class="form-group">
+						<div class="col-sm-10" style="margin-left: 15px;">
+							<button type="submit" class="btn btn-primary">Salvar</button>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</form>
+	<div th:if="${module.oid} != null">
+		<form id="studentForm" class="form-horizontal" method="POST" action="/modules/student/adicionar/0" th:object="${student}">
+			<div class="panel-heading">
+				<div class="clearfix">
+					<h1 class="panel-title os-title-panel">Estudantes</h1>
+				</div>
+			</div>
+			<div class="panel-body">
+				<div class="form-group">
+					<div class="col-md-3">
+						<select id="studentDropdown" name="studentDropdown" class="form-control" th:field="*{id}" onchange="onChangeStudent();">
+							<option th:text="-----Selecione-----" value="0"></option>
+							<option th:each="student:${allStudents}" th:text="${student.name}" th:value="${student.id}"></option>
+						</select>
+					</div>
+					<div class="col-md-2">
+						<button type="submit" class="btn btn-primary">Adicionar</button>
+					</div>
+				</div>
+				<div class="form-group">
+					<table id="tbl-students" class="table table-bordered table-striped">
+						<thead>
+							<tr>
+								<th class="text-center col-md-1">#</th>
+								<th class="text-center col-md-5">Nome</th>
+								<th class="text-center col-md-3">E-mail</th>
+								<th class="text-center col-md-3">Ações</th>
+							</tr>
+						</thead>
+						<tbody id='tadd'>
+							<tr id="tbl-vinculadas-empty">
+								<td colspan="6" th:if="${#lists.isEmpty(selectedStudents)}">Nenhum aluno selecionado</td>
+							</tr>
+							<tr th:each="stud : ${selectedStudents}">
+								<td class="text-center" th:text="${stud.id}"></td>
+								<td class="text-center" th:text="${stud.name}"></td>
+								<td class="text-center" th:text="${stud.email}"></td>
+								<td class="text-center">
+									<a class="btn btn-link btn-xs" th:href="@{/modules/student/remover/{id}(id=${stud.id})}"> 
+										<span class="glyphicon glyphicon glyphicon-minus"></span>
+									</a>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</form>
+	</div>
+	
+	<script type="text/javascript">
+		function onChangeStudent(){
+			newAction = '/modules/student/adicionar/' + $('#studentDropdown').val();
+			$('#studentForm').attr('action', newAction);
+		}
+		
+	</script>
+</section>
+</html>

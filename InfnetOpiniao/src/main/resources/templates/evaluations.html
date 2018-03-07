@@ -1,0 +1,65 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layouts/default">
+<head ></head>
+
+<section layout:fragment="content">
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <div class="clearfix">
+                <h1 class="panel-title os-title-panel">Pesquisar Avaliação</h1>
+                <a  class="btn btn-link os-link-panel" href="/evaluations/create">Nova Avaliação</a>
+            </div>
+        </div>
+        <div class="panel-body">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th class="text-center col-md-1">#</th>
+                        <th class="text-center col-md-3">Convite</th>
+                        <th class="text-center col-md-3">Objetivo</th>
+                        <th class="text-center col-md-1">Criação</th>
+                        <th class="text-center col-md-1">Início</th>
+                        <th class="text-center col-md-1">Fim</th>
+                        <th class="text-center col-md-1">Status</th>
+                        <th class="text-center col-md-1">Opções</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="evaluation : ${evaluations}">
+                        <td class="text-center" th:text="${evaluation.oid}"></td>
+                        <td th:text="${evaluation.inviteText}"></td>
+                        <td th:text="${evaluation.objective}"></td>
+                        <td class="text-center" th:text="${{evaluation.creationDate}}"></td>
+                        <td class="text-center" th:text="${{evaluation.startDate}}"></td>
+                        <td class="text-center" th:text="${{evaluation.endDate}}"></td>
+                        <td class="text-center" th:text="${statusMap.get(evaluation.status)}"></td>
+                        <td class="text-center">
+                            <a class="btn btn-link btn-xs" th:href="@{/evaluations/update/{id}(id=${evaluation.oid})}" th:object="${question}" method="post">
+                                <span th:if="${evaluation.status == null}" class="glyphicon glyphicon-pencil" title="Editar"></span>
+                                <span th:if="${evaluation.status != null}" class="glyphicon glyphicon-eye-open" title="Visualizar"></span>
+                            </a>
+                            <a th:if="${{evaluation.status}} == null" class="btn btn-link btn-xs" th:href="@{/evaluations/delete/{id}(id=${evaluation.oid})}" th:object="${question}" method="post" style="margin-left: 5px;">
+                                <span class="glyphicon glyphicon-remove" title="Remover"></span>
+                            </a>
+                            <a th:if="${{evaluation.status}} == 'FI'" class="btn btn-link btn-xs" th:href="@{/evaluations/file/avaliacao_{id}.csv(id=${evaluation.oid})}" th:object="${question}" method="post" style="margin-left: 5px;">
+                                <span class="glyphicon glyphicon-download" title="Baixar Relatório"></span>
+                            </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="6" th:if="${#lists.isEmpty(evaluations)}">Nenhuma avaliação encontrada</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function(){
+            $( document ).tooltip();
+        });
+    </script>
+</section>
+</html>

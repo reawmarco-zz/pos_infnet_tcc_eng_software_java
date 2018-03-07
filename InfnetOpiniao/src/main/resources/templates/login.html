@@ -1,0 +1,27 @@
+<html xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layouts/default">
+<head ></head>
+
+<section layout:fragment="content">
+       
+<div class = "container">
+	<div class="wrapper">
+	    
+		<form th:action="@{/login}" method="post" name="Login_Form" class="form-signin">       
+		    <h3 class="form-signin-heading">Pesquisa Infnet</h3>
+						  
+			  <input type="text" class="form-control" name="login" id="login" placeholder="usuario" required="" autofocus="" />
+			  <input type="password" class="form-control" name="senha" id="senha" placeholder="senha" required=""/>     		  
+			 
+			  <button class="btn btn-lg btn-primary btn-block"  name="Submit" value="Login" type="Submit">Login</button>  			
+		</form>	
+		<p th:if="${param.error}">
+            Usuário e/ou senha inválidos
+        </p>		
+	</div>
+</div>
+       
+</section>
+</html> 

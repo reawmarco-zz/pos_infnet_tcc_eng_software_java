@@ -1,0 +1,54 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layouts/default">
+<head ></head>
+
+<section layout:fragment="content">
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <div class="clearfix">
+                <h1 class="panel-title os-title-panel">Pesquisar Cursos</h1>
+                <a  class="btn btn-link os-link-panel" href="/courses/create">Novo Curso</a>
+            </div>
+        </div>
+        <div class="panel-body">
+	        <table class="table table-bordered table-striped">
+	            <thead>
+	            <tr>
+	                <th class="text-center col-md-1">#</th>
+	                <th class="text-center col-md-8">Nome</th>
+	                <th class="text-center col-md-8">Descrição</th>
+	                <th class="text-center col-md-2">Editar</th>
+	                <th class="text-center col-md-2">Excluir</th>
+	            </tr>
+	            </thead>
+	            <tbody>
+	            <tr th:each="course : ${courses}">
+	                <td class="text-center" th:text="${course.oid}"></td>
+	                <td class="text-center" th:text="${course.name}"></td>
+	                <td class="text-center" th:text="${course.description}"></td>
+	                <td class="text-center">
+	                    <a class="btn btn-link btn-xs" th:href="@{/courses/update/{id}(id=${course.oid})}" th:object="${course}" method="post" >
+	                        <span class="glyphicon glyphicon-pencil"></span>
+	                    </a>
+	                </td>
+	                <td class="text-center">
+	                    <a class="btn btn-link btn-xs" th:href="@{/courses/delete/{id}(id=${course.oid})}" th:object="${course}" method="post" >
+	                        <span class="glyphicon glyphicon-remove"></span>
+	                    </a>
+	                </td>
+	            </tr>
+	            <tr>
+	                <td colspan="6" th:if="${#lists.isEmpty(courses)}">Nenhum curso encontrado</td>
+	            </tr>
+	            </tbody>
+	        </table>
+	    </div>
+    </div>
+    <script>
+        $(document).ready(function(){
+            $( document ).tooltip();
+        });
+    </script>
+</section>
+</html>

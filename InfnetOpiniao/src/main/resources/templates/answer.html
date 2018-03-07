@@ -1,0 +1,92 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layouts/default">
+<head></head>
+<section layout:fragment="content" class="col-20 col-sm-12 col-lg-16">
+	<div class="container">
+		<br /> <br /> <br /> <br /> <br />
+		<div class="jumbotron">
+			<label th:if="${status} == 'ok'" align="center"><h3>Avaliação - Alunos Pós Graduação</h3></label> <br /> <br />
+			<form class="form-horizontal " method="POST" action="/answer">
+
+				<br />
+				<div th:each="questionExtras, iter1 : ${questionsExtras}" th:if="${status} == 'ok'">
+					<div th:if="${questionExtras.question.questionCategory} == 'EXTRA'" class="form-group">
+						<h4 th:if="${iter1.count == 1}">Avaliação geral da Pós-Graduação:</h4>
+						<br />
+						<label th:text="${iter1.count}"></label> - <label th:text="${questionExtras.question.questionText}"></label>
+						<div th:if="${questionExtras.question.questionType} == 'LIKERT'">
+							<label class="radio-inline"><input type="radio" th:name="${questionExtras.question.oid}" value="CT" />Concordo totalmente</label> <label
+								class="radio-inline"><input type="radio" th:name="${questionExtras.question.oid}" value="CO" />Concordo</label> <label
+								class="radio-inline"><input type="radio" th:name="${questionExtras.question.oid}" value="CD" />Não concordo nem discordo</label> <label
+								class="radio-inline"><input type="radio" th:name="${questionExtras.question.oid}" value="DI" />Discordo</label> <label
+								class="radio-inline"><input type="radio" th:name="${questionExtras.question.oid}" value="DT" />Discordo totalmente</label> <label
+								class="radio-inline"><input type="radio" th:name="${questionExtras.question.oid}" value="NA" />Não sei avaliar</label>
+						</div>
+						<div th:if="${questionExtras.question.questionType} == 'DESC'" class="form-group">
+							<br />
+							<textarea rows="6" th:name="${questionExtras.question.oid}" class="form-control"></textarea>
+						</div>
+					</div>
+				</div>
+				<br/>
+				<div th:each="questionProfessor, iter2 : ${questionsProfessor}" th:if="${status} == 'ok'">
+					<div th:if="${questionProfessor.question.questionCategory} == 'PROFESSOR'" class="form-group">
+						<h4 th:if="${iter2.count == 1}">Avaliação do Professor no módulo:</h4>
+						<br /> 
+						<label th:text="${iter2.count}"></label> - <label th:text="${questionProfessor.question.questionText}"></label>
+						<div th:if="${questionProfessor.question.questionType} == 'LIKERT'">
+							<label class="radio-inline"><input type="radio" th:name="${questionProfessor.question.oid}" value="CT" />Concordo totalmente</label> <label
+								class="radio-inline"><input type="radio" th:name="${questionProfessor.question.oid}" value="CO" />Concordo</label> <label
+								class="radio-inline"><input type="radio" th:name="${questionProfessor.question.oid}" value="CD" />Não concordo nem discordo</label> <label
+								class="radio-inline"><input type="radio" th:name="${questionProfessor.question.oid}" value="DI" />Discordo</label> <label
+								class="radio-inline"><input type="radio" th:name="${questionProfessor.question.oid}" value="DT" />Discordo totalmente</label> <label
+								class="radio-inline"><input type="radio" th:name="${questionProfessor.question.oid}" value="NA" />Não sei avaliar</label>
+						</div>
+						<div th:if="${questionProfessor.question.questionType} == 'DESC'" class="form-group">
+							<br />
+							<textarea rows="6" th:name="${questionProfessor.question.oid}" class="form-control"></textarea>
+						</div>
+					</div>
+				</div>
+				<br/>
+				<div th:each="questionEstrutura, iter3 : ${questionsEstrutura}" th:if="${status} == 'ok'">
+					<div th:if="${questionEstrutura.question.questionCategory} == 'ESTRUTURA'" class="form-group">
+						<h4 th:if="${iter3.count == 1}">Avaliação do conteúdo e infra-estrutura no módulo:</h4>
+						<br />
+						<label th:text="${iter3.count}"></label> - <label th:text="${questionEstrutura.question.questionText}"></label>
+						<div th:if="${questionEstrutura.question.questionType} == 'LIKERT'">
+							<label class="radio-inline"><input type="radio" th:name="${questionEstrutura.question.oid}" value="CT" />Concordo totalmente</label> <label
+								class="radio-inline"><input type="radio" th:name="${questionEstrutura.question.oid}" value="CO" />Concordo</label> <label
+								class="radio-inline"><input type="radio" th:name="${questionEstrutura.question.oid}" value="CD" />Não concordo nem discordo</label> <label
+								class="radio-inline"><input type="radio" th:name="${questionEstrutura.question.oid}" value="DI" />Discordo</label> <label
+								class="radio-inline"><input type="radio" th:name="${questionEstrutura.question.oid}" value="DT" />Discordo totalmente</label> <label
+								class="radio-inline"><input type="radio" th:name="${questionEstrutura.question.oid}" value="NA" />Não sei avaliar</label>
+						</div>
+						<div th:if="${questionEstrutura.question.questionType} == 'DESC'" class="form-group">
+							<br />
+							<textarea rows="6" th:name="${questionEstrutura.question.oid}" class="form-control"></textarea>
+						</div>
+					</div>
+				</div>
+
+				<div th:if="${status} == 'error'">
+					<label>Questões obrigatórias não respondidas.</label>
+				</div>
+				<div th:if="${status} == 'answered'">
+					<label>Questionário já respondido.</label>
+				</div>
+				<div th:if="${status} == 'success'">
+					<label>Questionário respondido com sucesso, muito obrigado!</label>
+				</div>
+				<div th:if="${status} == 'expired'">
+					<label>Questionário já encerrado.</label>
+				</div>
+				<br />
+				<button type="submit" class="btn btn-primary" th:if="${status} == 'ok'">Enviar</button>
+				<button type="button" class="btn btn-secundary" onclick="window.history.go(-1);" th:if="${status} == 'error'">Voltar</button>
+				<br /> <br />
+			</form>
+		</div>
+	</div>
+</section>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation" style="background-color: #5580B0;">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<a class="navbar-brand logo" href="/home"> <img alt="Infnet " src="/images/logoInfnet.png" />
+			</a>
+		</div>
+		<ul class="nav navbar-nav">
+			<li th:if="${#httpServletRequest.remoteUser != null}" class="dropdown"><a href="#" class="dropdown-toggle menu-title"
+				data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+				</a>
+				<li><a href="/students">Estudantes</a></li>
+				<li><a href="/questions">Questões</a></li>
+				<li><a href="/courses">Cursos</a></li>
+				<li><a href="/blocks">Blocos</a></li>
+				<li><a href="/modules">Módulos</a></li>
+				<li><a href="/evaluations">Avaliações</a></li>
+				<li role="separator" class="divider"></li>
+				<li class="sairicon">
+					<form th:action="@{/logout}" method="POST">
+						<button type="submit" class="btn btn-link" data-placement="top"
+							th:title="'Deslogar ' + ${#httpServletRequest.remoteUser}">
+							<span class="sair" style="color:white;">Sair</span>
+						</button>
+					</form>
+				</li>
+			</li>
+		</ul>
+	</div>
+</nav>
+</html>

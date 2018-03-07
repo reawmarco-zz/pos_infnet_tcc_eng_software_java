@@ -1,0 +1,47 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layouts/default">
+<head></head>
+
+<section layout:fragment="content">
+
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<div class="clearfix">
+				<h1 class="panel-title os-title-panel">Pesquisar Estudantes</h1>
+				<a class="btn btn-link os-link-panel" href="/students/create">Novo Estudante</a>
+			</div>
+		</div>
+		<div class="panel-body">
+			<div class="table-responsive">
+				<table class="table table-bordered table-striped">
+					<thead>
+						<tr>
+							<th class="text-center col-md-1">#</th>
+							<th class="text-center col-md-6">Nome</th>
+							<th class="text-center col-md-10">E-mail</th>
+							<th class="text-center col-md-2">Editar</th>
+							<th class="text-center col-md-2">Excluir</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="student : ${students}">
+							<td class="text-center" th:text="${student.id}"></td>
+							<td class="text-center" th:text="${student.name}"></td>
+							<td class="text-center" th:text="${student.email}"></td>
+							<td class="text-center"><a class="btn btn-link btn-xs" th:href="@{/students/update/{id}(id=${student.id})}"
+								th:object="${student}" method="post"> <span class="glyphicon glyphicon-pencil"></span>
+							</a></td>
+							<td class="text-center"><a class="btn btn-link btn-xs" th:href="@{/students/delete/{id}(id=${student.id})}"
+								th:object="${student}" method="post"> <span class="glyphicon glyphicon-remove"></span>
+							</a></td>
+						</tr>
+						<tr>
+							<td colspan="6" th:if="${#lists.isEmpty(students)}">Nenhum estudante encontrado</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</section>
+</html>

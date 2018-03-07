@@ -1,0 +1,128 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layouts/default">
+<head>
+<title>Cadastro de Avaliação</title>
+</head>
+<section layout:fragment="content">
+	<div class="panel-body">
+		<form class="form-horizontal" method="POST" action="/evaluations" th:object="${evaluation}">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<div class="clearfix">
+						<h1 class="panel-title os-title-panel">Nova Avaliação</h1>
+						<a class="btn btn-link os-link-panel" href="/evaluations">Voltar para pesquisa</a>
+					</div>
+				</div>
+				<div class="panel-body">
+					<input type="hidden" th:attr="data-role=${evaluation.oid}" th:field="*{oid}" />
+					<input type="hidden" th:attr="data-role=${evaluation.creationDate}" th:field="*{creationDate}" />
+					<input type="hidden" th:attr="data-role=${evaluation.status}" th:field="*{status}" />
+
+					<div class="col-md-4">
+						<label class="col-sm-2">Convite</label> <input type="text" class="form-control" id="inviteText" th:field="*{inviteText}" />
+					</div>
+
+
+					<div class="col-md-2">
+						<label class="col-sm-2">Objetivo</label> <input type="text" class="form-control" id="objective" th:field="*{objective}" />
+					</div>
+
+
+					<div class="col-md-2">
+						<label class="col-sm-2">Inicio</label> <input type="text" class="form-control datePicker1" id="startDate" th:field="*{startDate}" />
+					</div>
+
+					<div class="col-md-2">
+						<label class="col-sm-2">Fim</label> <input type="text" class="form-control datePicker1" id="endDate" th:field="*{endDate}" />
+					</div>
+
+					<div class="col-md-2">
+						<label>Módulo</label> <br />
+						 <select class="form-control" th:field="*{oidModule}">
+							<option th:each="module:${allModules}" th:text="${module.description}" th:value="${module.oid}"></option>
+						</select>
+					</div>
+
+				</div>
+				<div class="form-group" th:if="${evaluation.status == null}">
+					<button type="submit" class="btn btn-primary" style="margin-left: 25px;">Salvar</button>
+				</div>
+			</div>
+		</form>
+	</div>
+	
+	<div th:if="${evaluation.oid != null and evaluation.status == null}">
+		<form class="form-horizontal" method="POST" action="/evaluations/endConstruction" th:object="${evaluation}">
+			<div class="form-group">
+				<button type="submit" class="btn btn-primary" style="margin-left: 25px;">Finalizar Construção</button>
+			</div>
+		</form>
+	</div>
+
+	<div th:if="${evaluation.oid != null}">
+		<div class="panel-body">
+			<div class="table-responsive">
+				<table id="tbl-vinculadas" class="table table-bordered table-striped">
+					<thead>
+						<tr>
+							<th class="text-center col-md-1">#</th>
+							<th class="text-center col-md-5">Questões Vinculadas</th>
+							<th class="text-center col-md-3">Tipo</th>
+							<th class="text-center col-md-3">Ações</th>
+						</tr>
+					</thead>
+					<tbody id='tadd'>
+						<tr id="tbl-vinculadas-empty">
+							<td colspan="6" th:if="${#lists.isEmpty(equestions)}">Nenhuma questão encontrada</td>
+						</tr>
+						<tr th:attr="data-roleeq=${equestion.question.oid}" th:each="equestion : ${equestions}">
+							<td class="text-center" th:text="${equestion.question.oid}"></td>
+							<td id="tdQuestionText" th:text="${equestion.question.questionText}"></td>
+							<td id="tdQuestionTypet" class="text-center" th:text="${equestion.question.questionType}"></td>
+							<td class="text-center">
+								<a class="btn btn-link btn-xs js-remover-questao" th:if="${evaluation.status == null}"
+									th:attr="data-codigo=${evaluation.oid},data-id=${equestion.question.oid}"
+									th:href="@{/evaluations/{codigo}/remover/{id}(codigo=${evaluation.oid},id=${equestion.question.oid})}"> <span
+									class="glyphicon glyphicon glyphicon-minus"></span>
+								</a>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	
+		<div class="panel-body">
+			<div class="table-responsive">
+				<table id="tbl-disponiveis" class="table table-bordered table-striped">
+					<thead>
+						<tr>
+							<th class="text-center col-md-1">#</th>
+							<th class="text-center col-md-5">Questões Disponíveis</th>
+							<th class="text-center col-md-3">Tipo</th>
+							<th class="text-center col-md-3">Ações</th>
+						</tr>
+					</thead>
+					<tbody id='trem'>
+						<tr id="tbl-disponiveis-empty">
+							<td colspan="6" th:if="${#lists.isEmpty(questions)}">Nenhuma questão encontrada</td>
+						</tr>
+						<tr th:attr="data-roleq=${question.oid}" th:each="question : ${questions}">
+							<td class="text-center" th:text="${question.oid}"></td>
+							<td th:text="${question.questionText}"></td>
+							<td class="text-center" th:text="${question.questionType}"></td>
+							<td class="text-center">
+								<a class="btn btn-link btn-xs js-adicionar-questao" th:if="${evaluation.status == null}"
+									th:attr="data-codigo=${evaluation.oid},data-id=${question.oid}"
+									th:href="@{/evaluations/{codigo}/adicionar/{id}(codigo=${evaluation.oid},id=${question.oid})}"> <span
+									class="glyphicon glyphicon glyphicon-plus"></span>
+								</a>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</section>
+</html>

@@ -1,0 +1,50 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layouts/default">
+<head>
+
+<title>Cadastro de Blocos</title>
+</head>
+
+<section layout:fragment="content">
+
+	<form class="form-horizontal" method="POST" action="/blocks" th:object="${block}">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<div class="clearfix">
+					<h1 class="panel-title os-title-panel">Novo Bloco</h1>
+					<a class="btn btn-link os-link-panel" href="/blocks">Voltar para pesquisa</a>
+				</div>
+			</div>
+			<div class="panel-body">
+				<br />
+				<div class="form-group">
+					<input type="hidden" th:field="*{oid}"></input>
+
+					<div class="col-md-4">
+						<label for="name" class="col-md-2">Nome</label><br /> <input type="text" class="form-control" id="name" th:field="*{name}"></input>
+					</div>
+
+
+					<div class="col-md-4">
+						<label for="description" class="col-md-2">Descrição</label> <br />
+						<textarea rows="6" class="form-control" id="description" th:field="*{description}"></textarea>
+					</div>
+
+					<div class="col-md-2">
+						<label>Curso</label> <br /> <select class="form-control" th:field="*{course}">
+							<option th:each="course:${allCourses}" th:text="${course.description}" th:value="${course.oid}"></option>
+						</select>
+					</div>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<div class="col-sm-10" style="margin-left: 15px;">
+					<button type="submit" class="btn btn-primary">Salvar</button>
+				</div>
+			</div>
+
+		</div>
+	</form>
+</section>
+</html>
